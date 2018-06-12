@@ -1,0 +1,22 @@
+{
+    "name": "muwerk",
+    "keywords": "scheduler",
+    "description": "non-preemptive scheduler and mqtt-like communication queues",
+    "authors": [{
+        "name": "Dominik Schlösser",
+        "email": "dsc@dosc.net",
+        "maintainer": true
+    }, {
+        "name": "Leo Moll",
+        "email": "leo@yeasoft.com",
+        "maintainer": true
+    }],
+    "dependencies": {
+        "name": "ustd",
+        "authors": "Dominik Schösser, Leo Moll",
+        "frameworks": "arduino"
+    },
+    "version": "0.1.0",
+    "frameworks": "arduino",
+    "platforms": "*"
+}
