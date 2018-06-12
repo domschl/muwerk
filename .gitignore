@@ -1,0 +1,7 @@
+.ipynb_checkpoints
+.vscode
+build
+net.json
+
+.pioenvs
+.piolibdeps
