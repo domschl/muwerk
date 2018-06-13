@@ -17,7 +17,7 @@ set(CMAKE_CXX_FLAGS_DEBUG  "-ggdb")
 
 project(mustd-test)
 
-include_directories(../muwerk ../ustd)
+include_directories(../../muwerk ../../ustd)
 
 add_executable(mustd-test mustd-test.cpp)
 

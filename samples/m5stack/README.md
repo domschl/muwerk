@@ -4,7 +4,7 @@ This test-code displays MQTT sensor values and messages and NTP-time on the M5St
 
 ## Dependencies
 
-[Platformio](https://platformio.org/), which installs: ArduinoJson, MQTT (PubSubClient)
+[Platformio](https://platformio.org/), which installs: ArduinoJson, MQTT (PubSubClient), M5Stack
 
 ## Build
 
