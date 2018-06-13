@@ -1,6 +1,10 @@
 # microWerk
 
-microWerk is a test-version derived from [Meisterwerk](https://github.com/YeaSoft/MeisterWerk) by Leo Moll and Dominik Schösser.
+microWerk is a test-version derived from [Meisterwerk](https://github.com/YeaSoft/MeisterWerk) by Leo Moll and Dominik Schösser. It changes:
+
+* No inheritance: microWerk does not impose an object model to projects that use it. Coupling uses callbacks or C++11 functionals.
+* Larger hardware scope: ustd and muwerk can be used with basically all Arduino boards.
+* Lightweightness and layered functionality that allows independent usage.
 
 ## Current structure, which will change
 
