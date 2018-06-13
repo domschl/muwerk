@@ -8,8 +8,8 @@ microWerk is a test-version derived from [Meisterwerk](https://github.com/YeaSof
 
 ## Current structure, which will change
 
-* ustd (micro-stdlib), a minimal implementation of array, vector and map classes that work on all arduino platforms, from 8kb attiny up to Mac or Linux.
-* muwerk (microWerk), a cooperative scheduler and an MQTT-like communication-queue for all arduino devices (attiny up to ESP)
+* ustd (micro-stdlib), a minimal implementation of array, vector and map classes that work on all arduino platforms, from 8kb attiny up to ESP32 and Unixoids Mac or Linux (for testing).
+* muwerk (microWerk), a cooperative scheduler and an MQTT-like communication-queue for all arduino devices (attiny up to ESP32 [and Unixoids Mac or Linux for testing])
 * munet, modules for network connectivity for ESP8266 and ESP32 devices, implements Wireless connection to access point, NTP time protocol, OTA over-the-air udpate, MQTT-stack (using [PubSubClient](https://github.com/knolleary/pubsubclient)) that connects to muwerk-queues.
 * tinkers, a number of implementations for sensors and io-devices
 * test, some basic tests for different hardware platforms (AVR and ESP) and scheduler
