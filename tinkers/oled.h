@@ -4,6 +4,7 @@
 #include <Adafruit_SSD1306.h>
 
 #include "scheduler.h"
+#include "texttrans.h"
 
 // Oled display default i2c address:
 #define OLED_DISPLAY_ADDRESS 0x3C

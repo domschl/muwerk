@@ -58,6 +58,7 @@ void setup() {
 #endif
     Wire.begin(D1, D2);  // SDA, SCL; Non-standard, from the old days...
 #endif
+    Wire.setClock(400000L);
 
     sched.subscribe(SCHEDULER_MAIN, "borgclock/#", subsMsg);
 
