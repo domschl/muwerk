@@ -52,7 +52,16 @@ class Oled {
         pOled->setTextSize(1);
         pOled->setTextColor(WHITE);
         pOled->setCursor(0, 0);
-        pOled->println("Hello, world!");
+        pOled->println("123456789012345678901234567890");
+        pOled->println("123456789012345678901234567890");
+        pOled->println("123456789012345678901234567890");
+        pOled->println("123456789012345678901234567890");
+        pOled->println("123456789012345678901234567890");
+        pOled->println("123456789012345678901234567890");
+        pOled->println("123456789012345678901234567890");
+        pOled->println("123456789012345678901234567890");
+        pOled->println("123456789012345678901234567890");
+        pOled->println("123456789012345678901234567890");
 
         pOled->display();
 

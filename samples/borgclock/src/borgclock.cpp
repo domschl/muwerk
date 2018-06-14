@@ -29,7 +29,7 @@ ustd::Ota ota;
 // autbrightness=true, look for tsl2561/unitluminosity messages to adapt
 // brightness.
 ustd::Clock7Seg clock7("clock", 0x70, D5, true, "tsl2561/unitluminosity");
-ustd::Lumin lumin("tsl2561", 0x39, "1x", "medium", 28.0);
+ustd::Lumin lumin("tsl2561", 0x39, "1x", "fast", 28.0);
 ustd::Dht dht("dht22", 0, DHT22);  // port 0 == D3
 ustd::Pressure pressure("bmp085");
 ustd::Switch sw1("sw1", D7);

@@ -141,7 +141,7 @@ class Clock7Seg {
         }
         alarmStart = 0;
         std::function<void()> ft = [=]() { this->loop(); };
-        tID = pSched->add(ft, name, 50000);
+        tID = pSched->add(ft, name, 100000);
 
         std::function<void(String, String, String)> fnall =
             [=](String topic, String msg, String originator) {
