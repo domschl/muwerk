@@ -375,8 +375,9 @@ class Net {
                 if (WiFi.status() == WL_CONNECTED) {
                     long rssi = WiFi.RSSI();
                     if (rssival.filter(&rssi)) {
-                        pSched->publish("net/rssi",
-                                        "{\"rssi\":" + String(rssi) + "}");
+                        char buf[32];
+                        sprintf(buf, "%ld", rssi);
+                        pSched->publish("net/rssi", buf);
                     }
                 } else {
                     WiFi.reconnect();

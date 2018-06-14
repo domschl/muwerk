@@ -165,42 +165,44 @@ class Mqtt {
             Serial.println(("MQTT can't publish, MQTT down: " + topic).c_str());
 #endif
         }
-        DynamicJsonBuffer jsonBuffer(200);
-        JsonObject &root = jsonBuffer.parseObject(msg);
-        if (!root.success()) {
+        if ((topic == "net/services/mqttserver") || (topic == "net/network")) {
+            DynamicJsonBuffer jsonBuffer(200);
+            JsonObject &root = jsonBuffer.parseObject(msg);
+            if (!root.success()) {
 #ifdef USE_SERIAL_DBG
-            Serial.println(
-                ("mqtt: Invalid JSON received: " + String(msg)).c_str());
+                Serial.println(
+                    ("mqtt: Invalid JSON received: " + String(msg)).c_str());
 #endif
-            return;
-        }
-        if (topic == "net/services/mqttserver") {
-            if (!bMqInit) {
-                mqttServer = root["server"].as<char *>();
-                bCheckConnection = true;
-                mqttClient.setServer(mqttServer.c_str(), 1883);
-                // give a c++11 lambda as callback for incoming mqtt
-                // messages:
-                std::function<void(char *, unsigned char *, unsigned int)> f =
-                    [=](char *t, unsigned char *m, unsigned int l) {
-                        this->mqttReceive(t, m, l);
-                    };
-                // If this breaks for ESP32, patch pubsubclient, l.76:
-                // #if defined(ESP8266) or defined(ESP32)
-                // to allow functionals for callback signature
-                mqttClient.setCallback(f);
-                bMqInit = true;
+                return;
             }
-        }
-        if (topic == "net/network") {
-            String state = root["state"];
-            if (state == "connected") {
-                if (!netUp) {
-                    netUp = true;
+            if (topic == "net/services/mqttserver") {
+                if (!bMqInit) {
+                    mqttServer = root["server"].as<char *>();
                     bCheckConnection = true;
+                    mqttClient.setServer(mqttServer.c_str(), 1883);
+                    // give a c++11 lambda as callback for incoming mqtt
+                    // messages:
+                    std::function<void(char *, unsigned char *, unsigned int)>
+                        f = [=](char *t, unsigned char *m, unsigned int l) {
+                            this->mqttReceive(t, m, l);
+                        };
+                    // If this breaks for ESP32, patch pubsubclient, l.76:
+                    // #if defined(ESP8266) or defined(ESP32)
+                    // to allow functionals for callback signature
+                    mqttClient.setCallback(f);
+                    bMqInit = true;
                 }
-            } else {
-                netUp = false;
+            }
+            if (topic == "net/network") {
+                String state = root["state"];
+                if (state == "connected") {
+                    if (!netUp) {
+                        netUp = true;
+                        bCheckConnection = true;
+                    }
+                } else {
+                    netUp = false;
+                }
             }
         }
     };
