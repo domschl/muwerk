@@ -21,9 +21,13 @@ This is unfinished work in progress...
 
 ## Required patches
 
+### Issues and patches for ESP8266 and ESP32 boards
+
+* munet uses the MQTT-stack [PubSubClient](https://github.com/knolleary/pubsubclient). The maximum default size of MQTT messages (default: 128bytes(!)) should be increased. In `PubSubClient.h` make sure that a sufficient block-size is defined, e.g. `#define MQTT_MAX_PACKET_SIZE 512`. ESP32 users additonally need to apply the patch below.
+
 ### Issues and patches for ESP32 based boards
 
-* munet uses the MQTT-stack [PubSubClient](https://github.com/knolleary/pubsubclient). PubSubClient does not currently support ESP32, but support can be enabled with a simple patch: <https://github.com/knolleary/pubsubclient/pull/336>
+* munet uses the MQTT-stack [PubSubClient](https://github.com/knolleary/pubsubclient). PubSubClient does not currently support ESP32, but support can be enabled with a simple patch: <https://github.com/knolleary/pubsubclient/pull/336>. 
 * munet uses the SPIFFS filesystem of ESP8266 and ESP32 boards to store network configuration. Platformio doesn't (currently, to my knowledge) support upload of the SPIFFS filesystem to ESP32 boards. Use this [Arduino plugin](https://github.com/me-no-dev/arduino-esp32fs-plugin) to upload the SPIFFS filesystem to ESP32.
 * M5Stack buttons: In case of random button-pressed events, check: <https://github.com/m5stack/M5Stack/issues/52>
 
