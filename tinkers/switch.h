@@ -39,7 +39,7 @@ class Switch {
         // give a c++11 lambda as callback scheduler task registration of
         // this.loop():
         std::function<void()> ft = [=]() { this->loop(); };
-        tID = pSched->add(ft, name, 10000);
+        tID = pSched->add(ft, name, 80000);
 
         std::function<void(String, String, String)> fnall =
             [=](String topic, String msg, String originator) {

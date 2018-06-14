@@ -20,6 +20,7 @@
 #include "pressure.h"
 #include "switch.h"
 #include "airqual.h"
+#include "oled.h"
 
 ustd::Scheduler sched;
 ustd::Net net(LED_BUILTIN);
@@ -35,6 +36,7 @@ ustd::Switch sw1("sw1", D7);
 ustd::Switch sw2("sw2", D6, 20, ustd::Switch::customtopic_t::ON,
                  "clock/alarm/off");
 ustd::AirQuality airq("ccs811");
+ustd::Oled oled("ssd1306", 0x3c, true, "tsl2561/unitluminosity");
 
 void subsMsg(String topic, String msg, String originator) {
 #ifdef USE_SERIAL_DBG
@@ -70,6 +72,7 @@ void setup() {
     sw1.begin(&sched);
     sw2.begin(&sched);
     airq.begin(&sched);
+    oled.begin(&sched);
 }
 
 void loop() {

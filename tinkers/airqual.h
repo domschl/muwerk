@@ -1,6 +1,10 @@
 // airqual.h
 // adapted from:
 // https://github.com/sparkfun/SparkFun_CCS811_Arduino_Library/blob/master/examples/BasicReadings/BasicReadings.ino
+
+// PATCH REQUIRED for ESP!
+// https://github.com/sparkfun/SparkFun_CCS811_Arduino_Library/issues/6
+
 #pragma once
 
 #include "scheduler.h"
@@ -10,7 +14,8 @@
 
 // Default I2C Address for
 // https://learn.sparkfun.com/tutorials/ccs811-air-quality-breakout-hookup-guide
-#define SPARKFUN_CCS811_ADDR 0x5B
+// Address connector needs to be soldered to 5A, possible conflict with oled...
+#define SPARKFUN_CCS811_ADDR 0x5A  // (address bridge closed! Cut pull-ups!)
 
 namespace ustd {
 class AirQuality {
