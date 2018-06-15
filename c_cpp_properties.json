@@ -1,0 +1,4 @@
+"configurations": [{
+    "name": "Mac",
+    "includePath": ["./ustd", "./muwerk", "./munet", "./tinkers"]
+}]
