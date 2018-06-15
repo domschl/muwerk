@@ -8,25 +8,25 @@ microWerk is a test-version derived from [Meisterwerk](https://github.com/YeaSof
 
 ## Current structure, which will change
 
-* ustd (micro-stdlib), a minimal implementation of array, vector and map classes that work on all arduino platforms, from 8kb attiny up to ESP32 and Unixoids Mac or Linux (for testing).
-* muwerk (microWerk), a cooperative scheduler and an MQTT-like communication-queue for all arduino devices (attiny up to ESP32 [and Unixoids Mac or Linux for testing])
-* munet, modules for network connectivity for ESP8266 and ESP32 devices, implements Wireless connection to access point, NTP time protocol, OTA over-the-air udpate, MQTT-stack (using [PubSubClient](https://github.com/knolleary/pubsubclient)) that connects to muwerk-queues.
-* tinkers, a number of implementations for sensors and io-devices
-* test, some basic tests for different hardware platforms (AVR and ESP) and scheduler
-* samples, a number of specific examples using scheduler and tinkers on ESP platforms
+* [ustd](ustd/) (micro-stdlib), a minimal implementation of array, vector and map classes that work on all arduino platforms, from 8kb attiny up to ESP32 and Unixoids Mac or Linux (for testing).
+* [muwerk](muwerk/) (microWerk), a cooperative scheduler and an MQTT-like communication-queue for all arduino devices (attiny up to ESP32 [and Unixoids Mac or Linux for testing])
+* [munet](munet/), modules for network connectivity for ESP8266 and ESP32 devices, implements Wireless connection to access point, NTP time protocol, OTA over-the-air udpate, MQTT-stack (using [PubSubClient](https://github.com/knolleary/pubsubclient)) that connects to muwerk-queues.
+* [tinkers](tinkers/), a number of implementations for sensors and io-devices
+* [test](test/), some basic tests for different hardware platforms and scheduler (AVR, ESP, Linux, macOS)
+* [samples](samples/), a number of specific examples using scheduler and tinkers on ESP platforms
 
 ```
              +------------------------------+
-             |           Apps               |  
+             |           Apps               |  Samples
              +------------------------------+
-             |         Tinkers              |  Sensors, IO-libs and reusable functional units
+             |         Tinkers              |  Sensors, IO-libs, reusable functional units
 +------------+-------------+----------------+
-|  Testcode  |             |  munet (ESPx)  |  Access point client connection, NTP, OTA-update, MQTT (via PubSubClient)
-+--------------------------+----------------+
-|            .   muwerk    .                |  Cooperative scheduler and MQTT-like communication (pub/sub) 
-+-------------------------------------------+
-|            .    ustd     .                |  Minimal implementations of Queue, Map (Dicts) and Arrays for
-+------------+-------------+----------------+
+|  Testcode  |             |  munet (ESPx)  |  Access point client connection, NTP, 
++--------------------------+----------------+    OTA-update, MQTT (via PubSubClient)
+|            .   muwerk    .                |  Cooperative scheduler and  
++-------------------------------------------+    MQTT-like communication (pub/sub)
+|            .    ustd     .                |  Minimal implementations of Queue, Map (Dicts),
++------------+-------------+----------------+    Arrays
 | Mac, Linux | Arduino SDK | ESP8266/32 SDK |  OS and Arduino-Frameworks
 +------------+-------------+----------------+
 ```
