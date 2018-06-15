@@ -12,6 +12,8 @@ Support for ATTiny, Arduino Uno, Mega, and various ESP8266 and ESP32 boards with
 pio init
 pio run
 pio run -t upload [-e <yourboard>]
+# As soon as the first image is installed, OTA programming can be used:
+pio run -t upload --upload-port <mym5stack.home.net>
 ```
 
 ## Customize network configuration
