@@ -15,6 +15,22 @@ microWerk is a test-version derived from [Meisterwerk](https://github.com/YeaSof
 * test, some basic tests for different hardware platforms (AVR and ESP) and scheduler
 * samples, a number of specific examples using scheduler and tinkers on ESP platforms
 
+```
+             +------------------------------+
+             |           Apps               |  
+             +------------------------------+
+             |         Tinkers              |  Sensors, IO-libs and reusable functional units
++------------+-------------+----------------+
+|  Testcode  |             |  munet (ESPx)  |  Access point client connection, NTP, OTA-update, MQTT (via PubSubClient)
++--------------------------+----------------+
+|            .   muwerk    .                |  Cooperative scheduler and MQTT-like communication (pub/sub) 
++-------------------------------------------+
+|            .    ustd     .                |  Minimal implementations of Queue, Map (Dicts) and Arrays for
++------------+-------------+----------------+
+| Mac, Linux | Arduino SDK | ESP8266/32 SDK |  OS and Arduino-Frameworks
++------------+-------------+----------------+
+```
+
 At some point in the future, what is now a single project will be split into independent subprojects: ustd and muwerk work with basically any micro-controller, where as munet and the samples are for ESP-chips.
 
 This is unfinished work in progress...
