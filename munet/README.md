@@ -32,7 +32,7 @@ The network configuration is stored as a JSON file in the SPIFFS filesystems of 
 
 ## Uploading of the configuration
 
-### ESP8266
+### ESP8266 and ESP32
 
 ```bash
 # create the spiffs filesystem
@@ -43,16 +43,11 @@ pio run -t uploadfs
 
 ### ESP32
 
-Uploadfs currently doesn't seem to be supported with ESP32.
-
-The recommended way is to use the Arduino GUI with the following extension that adds an SPIFFS-upload option 
-to the Arduino GUI: [Arduino plugin](https://github.com/me-no-dev/arduino-esp32fs-plugin)
+* Support for SPIFFS `uploadfs` option of platformio with ESP32 is very recent (as of June 2018). Alternatively this [Arduino plugin](https://github.com/me-no-dev/arduino-esp32fs-plugin) can be used to upload the SPIFFS filesystem to ESP32.
 
 ## Network protocols
 
-* Automatic connection to an access point: munet uses the SSID and password to connect the ESP to the local wireless network.
-  Automatic reconnection will be tried on network-failures. On repeated failures, the ESP chip will be rebootet.
-* NTP: The library uses the new internal NTP time implementation. See test/netclock for samples on how to access local and UTC
-  time. The Unix time rule defines the automatic DST rules and timezones.
-* OTA: The munet library handles over-the-air software updates. Simply upload new images with `pio run -t upload --upload-port <hostname-of-esp>`
+* Automatic connection to an access point: munet uses the SSID and password to connect the ESP to the local wireless network. Automatic reconnection will be tried on network-failures. On repeated failures, the ESP chip will be rebootet.
+* NTP: The library uses the new internal NTP time implementation. See test/netclock for samples on how to access local and UTC time. The Unix time rule defines the automatic DST rules and timezones.
+* OTA: The munet library handles over-the-air software updates. Simply upload new images with `pio run -t upload --upload-port <hostname-of-esp>`. OTA-mode automatically switches the muwerk scheduler into single-task mode.
 * MQTT: tbd.

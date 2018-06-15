@@ -44,7 +44,7 @@ This is unfinished work in progress...
 ### Issues and patches for ESP32 based boards
 
 * munet uses the MQTT-stack [PubSubClient](https://github.com/knolleary/pubsubclient). PubSubClient does not currently support ESP32, but support can be enabled with a simple patch: <https://github.com/knolleary/pubsubclient/pull/336>. 
-* munet uses the SPIFFS filesystem of ESP8266 and ESP32 boards to store network configuration. Platformio doesn't (currently, to my knowledge) support upload of the SPIFFS filesystem to ESP32 boards. Use this [Arduino plugin](https://github.com/me-no-dev/arduino-esp32fs-plugin) to upload the SPIFFS filesystem to ESP32.
+* munet uses the SPIFFS filesystem of ESP8266 and ESP32 boards to store network configuration. Support for SPIFFS `uploadfs` option of platformio with ESP32 is very recent (as of June 2018). Alternatively this [Arduino plugin](https://github.com/me-no-dev/arduino-esp32fs-plugin) can be used to upload the SPIFFS filesystem to ESP32.
 * M5Stack buttons: In case of random button-pressed events, check: <https://github.com/m5stack/M5Stack/issues/52>
 
 ## Licenses
