@@ -32,12 +32,19 @@ The network configuration is stored as a JSON file in the SPIFFS filesystems of 
 
 ## Uploading of the configuration
 
+### Update platformio and sdks
+
+```bash
+pio update
+pio upgrade
+```
+
 ### ESP8266 and ESP32
 
 ```bash
 # create the spiffs filesystem
 pio run -t buildfs
-# upload to ESP8266
+# upload to ESP8266 (and ESP32 with latest platformio version)
 pio run -t uploadfs
 ```
 
