@@ -46,6 +46,12 @@ typedef struct {
     char *msg;
 } T_MSG;
 
+#ifndef __ATTINY__
+#define USTD_STD_MSGQUEUE_SIZE 32
+#else
+#define USTD_STD_MSGQUEUE_SIZE 2
+#endif
+
 #if defined(__ESP__) || defined(__UNIXOID__)
 typedef std::function<void(String topic, String msg, String originator)> T_SUBS;
 #else
@@ -98,7 +104,7 @@ class Scheduler {
     unsigned long mainTime = 0;  // Time spent with SCHEDULER_MAIN id.
 
   public:
-    Scheduler(int nTaskListSize = 2, int queueSize = 2,
+    Scheduler(int nTaskListSize = 2, int queueSize = USTD_STD_MSGQUEUE_SIZE,
               int nSubscriptionListSize = 2)
         : taskList(nTaskListSize), msgqueue(queueSize),
           subscriptionList(nSubscriptionListSize) {
