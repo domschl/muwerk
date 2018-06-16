@@ -1,5 +1,4 @@
-#if defined(__ESP__)
-#include <M5Stack.h>
+#include "M5Stack.h"
 
 #define USE_SERIAL_DBG 1
 
@@ -189,5 +188,3 @@ void setup() {
 void loop() {
     sched.loop();
 }
-
-#endif  // __ESP__

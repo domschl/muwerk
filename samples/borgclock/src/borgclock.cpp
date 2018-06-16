@@ -1,8 +1,7 @@
-#if defined(__ESP__)
-
 #define USE_SERIAL_DBG 1
 
 #include "platform.h"
+
 #include "scheduler.h"
 #include "net.h"
 #include "mqtt.h"
@@ -10,6 +9,21 @@
 
 #if defined(__ESP32__)
 #define LED_BUILTIN (5)
+#endif
+
+// add missing definitions for Adafruit Huzzah chip
+#if defined(HUZZAH)
+static const uint8_t D0 = 16;
+static const uint8_t D1 = 5;
+static const uint8_t D2 = 4;
+static const uint8_t D3 = 0;
+static const uint8_t D4 = 2;
+static const uint8_t D5 = 14;
+static const uint8_t D6 = 12;
+static const uint8_t D7 = 13;
+static const uint8_t D8 = 15;
+static const uint8_t RX = 3;
+static const uint8_t TX = 1;
 #endif
 
 #include "clock7seg.h"
@@ -60,6 +74,11 @@ void setup() {
 #endif
     Wire.setClock(400000L);
 
+    // CCS811 has the tendency to lock up the I2C bus on ESP platforms
+    // Workaround: relax clock stretch limit from 230 (default) to 460.
+    // See: https://forums.adafruit.com/viewtopic.php?f=19&t=121816&start=15
+    // twi_setClockStretchLimit(460);
+    Wire.setClockStretchLimit(460);
     sched.subscribe(SCHEDULER_MAIN, "borgclock/#", subsMsg);
 
     net.begin(&sched);
@@ -79,5 +98,3 @@ void setup() {
 void loop() {
     sched.loop();
 }
-
-#endif  // __ESP__
