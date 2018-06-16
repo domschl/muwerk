@@ -71,16 +71,13 @@ void subsMsg(String topic, String msg, String originator) {
     String me = topic + " " + msg + " " + originator;
     Serial.println(me.c_str());
 #endif
+    tt.registerValue(topic, msg);
+    // sched.publish("register", topic + " | " + msg);
 }
 
 void testStuff() {
-    int n = tt.registerForm("{12345678901234567890}{2}{3}{4}{}");
-    char buf[32];
-    sprintf(buf, "%d", n);
-    sched.publish("form-count", buf);
-    for (int i = 0; i < n; i++) {
-        sched.publish("form-parms", ">" + tt.topics[i] + "<");
-    }
+    String txt = tt.fillForm();
+    sched.publish("form", txt);
 }
 
 void setup() {
@@ -103,8 +100,9 @@ void setup() {
     // See: https://forums.adafruit.com/viewtopic.php?f=19&t=121816&start=15
     // twi_setClockStretchLimit(460);
     // Wire.setClockStretchLimit(460); (<- doesn't help!)
-    sched.subscribe(SCHEDULER_MAIN, "borgclock/#", subsMsg);
-
+    sched.subscribe(SCHEDULER_MAIN, "#", subsMsg);
+    tt.registerForm("Lum: {tsl2561/luminosity} lux\nUnt: "
+                    "{tsl2561/unitluminosity}");
     net.begin(&sched);
     mqtt.begin(&sched);
     ota.begin(&sched);
