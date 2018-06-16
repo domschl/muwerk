@@ -47,7 +47,7 @@ class NeoCandle {
             }
         }
         if (bUseModulator) {
-            wind = 30;
+            wind = 60;
             amp = 20;
         }
     }

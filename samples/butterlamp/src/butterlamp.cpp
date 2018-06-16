@@ -1,4 +1,3 @@
-#if defined(__ESP__)
 
 #define USE_SERIAL_DBG 1
 
@@ -60,5 +59,3 @@ void setup() {
 void loop() {
     sched.loop();
 }
-
-#endif  // __ESP__
