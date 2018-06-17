@@ -46,10 +46,14 @@ typedef struct {
     char *msg;
 } T_MSG;
 
-#ifndef __ATTINY__
+#ifdef __ESP__
 #define USTD_STD_MSGQUEUE_SIZE 32
 #else
+#ifdef __ATTINY__
 #define USTD_STD_MSGQUEUE_SIZE 2
+#else
+#define USTD_STD_MSGQUEUE_SIZE 4
+#endif
 #endif
 
 #if defined(__ESP__) || defined(__UNIXOID__)

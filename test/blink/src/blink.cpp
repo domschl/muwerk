@@ -1,3 +1,5 @@
+#define USE_SERIAL_DBG 1
+
 #include "platform.h"
 #include "scheduler.h"
 #include "net.h"
@@ -174,14 +176,14 @@ void setup() {
     pinMode(connectLed, OUTPUT);
     digitalWrite(connectLed, LOW);  // Turn the LED off
 #endif
-    for (int i = 0; i < 3; i++) {
+    for (int i = 0; i < 10; i++) {
         digitalWrite(led, LOW);  // Turn the LED on
         delay(50);
         digitalWrite(led, HIGH);  // Turn the LED off
         delay(50);
     }
 
-#ifndef __ATTINY__
+#ifdef __ESP__
     testcases();
 #endif
 
@@ -192,7 +194,7 @@ void setup() {
     sched.subscribe(tID, "net/rssi", netconnect);
 #endif
 #ifndef __ATTINY__
-    sched.add(task1, "task1", 10000L);
+    sched.add(task1, "task1", 50000L);
 #endif
 #if defined(__ESP__)
     Serial.println("Starting net.begin");
@@ -201,7 +203,7 @@ void setup() {
 #endif
 #ifdef __ATTINY__
     delay(500);
-    sched.add(taskSerial, "serial", 10000L);
+    sched.add(taskSerial, "serial", 50000L);
 #endif
 #ifndef __ATTINY__
     Serial.println("Setup complete");
