@@ -83,8 +83,14 @@ class Oled {
         bStarted = true;
     }
 
+    int cnt = 0;
     void loop() {
+        char buf[32];
         if (bStarted) {
+            pOled->setCursor(0, 0);
+            sprintf(buf, "%d", cnt);
+            pOled->println(buf);
+            ++cnt;
         }
     }
 
