@@ -90,6 +90,7 @@ class Oled {
             pOled->setCursor(0, 0);
             sprintf(buf, "%d", cnt);
             pOled->println(buf);
+            pOled->display();
             ++cnt;
         }
     }
