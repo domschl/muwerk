@@ -18,7 +18,7 @@ ustd::Net net(LED_BUILTIN);  // During connection-attempts, onboard-led is on,
 ustd::Mqtt mqtt;
 ustd::Ota ota;
 
-ustd::Radio433 r433("Radio", D5);
+ustd::Radio433 r433("Radio", 0);
 
 void subsMsg(String topic, String msg, String originator) {
     if (topic == "radio/event") {

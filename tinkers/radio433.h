@@ -35,29 +35,33 @@ class Radio433 {
             };
         pSched->subscribe(tID, name + "/radio433/#", fnall);
 
+        pinMode(rcvPin, INPUT);
         RFControl::startReceiving(rcvPin);
     }
 
     void loop() {
         if (RFControl::hasData()) {
+#ifdef USE_SERIAL_DBG
+            Serial.println("has data");
+#endif
             unsigned int *timings;
             unsigned int timings_size;
             unsigned int pulse_length_divider =
                 RFControl::getPulseLengthDivider();
             RFControl::getRaw(&timings, &timings_size);
-            for (int i = 0; i < timings_size; i++) {
+            for (unsigned int i = 0; i < timings_size; i++) {
                 unsigned long timing = timings[i] * pulse_length_divider;
 #ifdef USE_SERIAL_DBG
                 Serial.print(timing);
-                Serial.write('\t');
+                Serial.print("\t");
                 if ((i + 1) % 16 == 0) {
-                    Serial.write('\n');
+                    Serial.print("\n");
                 }
 #endif
             }
 #ifdef USE_SERIAL_DBG
-            Serial.write('\n');
-            Serial.write('\n');
+            Serial.print("\n");
+            Serial.println();
 #endif
             RFControl::continueReceiving();
         }
