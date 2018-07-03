@@ -359,9 +359,10 @@ class Scheduler {
     void checkStats() {
         unsigned long now = micros();
         unsigned long tDelta = timeDiff(statTimer, now);
-        if (tDelta > 1000000) {
+        unsigned long statsecs = 60;
+        if (tDelta > statsecs * 1000000) {
 #ifdef USE_SERIAL_DBG
-            Serial.println("-------------------------");
+            Serial.println("-Profiler------------------");
             Serial.print("tDelta ");
             Serial.print((unsigned long)now);
             Serial.print(" ");
@@ -369,30 +370,37 @@ class Scheduler {
             Serial.print(" ");
             Serial.println(tDelta);
             Serial.print("system ");
-            Serial.println((double)(systemTime / 1000.0));
+            Serial.println((double)(systemTime / (statsecs * 1000.0)));
             Serial.print("app-total ");
-            Serial.println((double)(appTime / 1000.0));
+            Serial.println((double)(appTime / (statsecs * 1000.0)));
             Serial.print("main   ");
-            Serial.println((double)(mainTime / 1000.0));
+            Serial.println((double)(mainTime / (statsecs * 1000.0)));
             Serial.print("# tasks: ");
             Serial.println((unsigned long)taskList.length());
 #endif
             for (unsigned int i = 0; i < taskList.length(); i++) {
 #ifdef USE_SERIAL_DBG
-                double millis = (taskList[i].cpuTime * 1000.0) / tDelta;
+                double millis =
+                    (taskList[i].cpuTime * (statsecs * 1000.0)) / tDelta;
                 if (taskList[i].szName != nullptr) {
                     Serial.print(taskList[i].szName);
                 } else {
                     Serial.print("<null>");
                 }
-                Serial.print(" ");
-                Serial.print(taskList[i].lateTime);
-                Serial.print(" ");
-                Serial.println(millis);
+                Serial.print(" late:");
+                double lateMillis =
+                    (taskList[i].lateTime * (statsecs * 1000.0)) / tDelta;
+                Serial.print(lateMillis);
+                Serial.print("ms, cpu:");
+                Serial.print(millis);
+                Serial.println("ms");
 #endif
                 taskList[i].cpuTime = 0;
                 taskList[i].lateTime = 0;
             }
+#ifdef USE_SERIAL_DBG
+            Serial.println("---------------------------");
+#endif
             statTimer = now;
             systemTime = 0;
             appTime = 0;

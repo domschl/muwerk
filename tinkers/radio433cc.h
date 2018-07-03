@@ -113,26 +113,23 @@ class Radio433CC {
 
         pRadio = new CC1101();
         pRadio->init();
-        pRadio->setSyncWord(syncWord);
+        // pRadio->setSyncWord(syncWord);
         pRadio->setCarrierFreq(CFREQ_433);
         pRadio->disableAddressCheck();
         pRadio->setTxPowerAmp(PA_LongDistance);
 
         pRadio->setRxState();
 
-        /*
-                Serial.print(F("CC1101_PARTNUM "));
-                Serial.println(pRadio->readReg(CC1101_PARTNUM,
-           CC1101_STATUS_REGISTER)); Serial.print(F("CC1101_VERSION "));
-                Serial.println(pRadio->readReg(CC1101_VERSION,
-           CC1101_STATUS_REGISTER)); Serial.print(F("CC1101_MARCSTATE "));
-                Serial.println(
-                    pRadio->readReg(CC1101_MARCSTATE, CC1101_STATUS_REGISTER) &
-           0x1f);
+        Serial.print(F("CC1101_PARTNUM "));
+        Serial.println(pRadio->readReg(CC1101_PARTNUM, CC1101_STATUS_REGISTER));
+        Serial.print(F("CC1101_VERSION "));
+        Serial.println(pRadio->readReg(CC1101_VERSION, CC1101_STATUS_REGISTER));
+        Serial.print(F("CC1101_MARCSTATE "));
+        Serial.println(
+            pRadio->readReg(CC1101_MARCSTATE, CC1101_STATUS_REGISTER) & 0x1f);
 
+        Serial.println(F("CC1101 radio initialized."));
 
-                Serial.println(F("CC1101 radio initialized."));
-                */
         attachInterrupt(CC1101Interrupt, messageReceived, FALLING);
     }
 
@@ -145,12 +142,12 @@ class Radio433CC {
             ++pkg;
             char msg[256];
             sprintf(msg, "Pkg-nr: %d", pkg);
+            Serial.println(msg);
 
-            pSched->publish(name + "/received", msg);
+            // pSched->publish(name + "/received", msg);
             CCPACKET packet;
             if (pRadio->receiveData(&packet) > 0) {
-                pSched->publish(name + "/received", "something");
-                /*
+                // pSched->publish(name + "/received", "something");
                 Serial.println(F("Received packet..."));
                 if (!packet.crc_ok) {
                     Serial.println(F("crc not ok"));
@@ -167,7 +164,6 @@ class Radio433CC {
                     Serial.println(F("data: "));
                     Serial.println((const char *)packet.data);
                 }
-                */
             }
 
             attachInterrupt(CC1101Interrupt, messageReceived, FALLING);

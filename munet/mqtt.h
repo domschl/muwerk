@@ -66,7 +66,7 @@ class Mqtt {
         // give a c++11 lambda as callback scheduler task registration of
         // this.loop():
         std::function<void()> ft = [=]() { this->loop(); };
-        tID = pSched->add(ft, "mqtt");
+        tID = pSched->add(ft, "mqtt", 100000L);
 
         std::function<void(String, String, String)> fnall =
             [=](String topic, String msg, String originator) {
