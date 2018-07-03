@@ -3,6 +3,8 @@
 #include "mqtt.h"
 #include "ota.h"
 
+#include "radio433cc.h"
+
 #if defined(__ESP32__)
 #define LED_BUILTIN (5)
 #endif
