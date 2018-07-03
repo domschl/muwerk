@@ -5,7 +5,7 @@
 #include "mqtt.h"
 #include "ota.h"
 
-#include "radio433cc.h"
+#include "radio433.h"
 
 #if defined(__ESP32__)
 #define LED_BUILTIN (5)
@@ -18,7 +18,7 @@ ustd::Net net(LED_BUILTIN);  // During connection-attempts, onboard-led is on,
 ustd::Mqtt mqtt;
 ustd::Ota ota;
 
-ustd::Radio433CC r433("Radio");
+ustd::Radio433 r433("Radio", D5);
 
 void subsMsg(String topic, String msg, String originator) {
     if (topic == "radio/event") {
