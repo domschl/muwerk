@@ -1,3 +1,5 @@
+#define USE_SERIAL_DBG 1
+
 #include "scheduler.h"
 #include "net.h"
 #include "mqtt.h"
@@ -16,7 +18,7 @@ ustd::Net net(LED_BUILTIN);  // During connection-attempts, onboard-led is on,
 ustd::Mqtt mqtt;
 ustd::Ota ota;
 
-uint8_t radioLed;
+ustd::Radio433CC r433("Radio");
 
 void subsMsg(String topic, String msg, String originator) {
     if (topic == "radio/event") {
@@ -24,14 +26,16 @@ void subsMsg(String topic, String msg, String originator) {
 }
 
 void setup() {
-    radioLed = LED_BUILTIN;  // used for net connection-state (on until
-                             // connected) *and* radio events
+    Serial.begin(115200);
+    Serial.println("Hello, world!");
 
     sched.subscribe(SCHEDULER_MAIN, "radio/#", subsMsg);
 
     net.begin(&sched);
     mqtt.begin(&sched);
     ota.begin(&sched);
+
+    r433.begin(&sched);
 }
 
 void loop() {
