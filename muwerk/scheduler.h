@@ -79,9 +79,7 @@ typedef struct {
     unsigned long lastCall;
     unsigned long lateTime;
     unsigned long cpuTime;
-    unsigned int cpuMillis1;
-    unsigned int cpuMillis4;
-    unsigned int cpuMillis16;
+    unsigned long callCount;
 } T_TASKENTRY;
 
 unsigned long timeDiff(unsigned long first, unsigned long second) {
@@ -284,9 +282,11 @@ class Scheduler {
                     if (subscriptionList[i].taskID != SCHEDULER_MAIN) {
                         int ind =
                             getIndexFromTaskID(subscriptionList[i].taskID);
-                        if (ind != -1)
+                        if (ind != -1) {
                             taskList[ind].cpuTime +=
                                 timeDiff(startTime, micros());
+                            // ++taskList[ind].callCount;
+                        }
                     } else {
                         mainTime += timeDiff(startTime, micros());
                     }
@@ -353,6 +353,7 @@ class Scheduler {
             pTaskEnt->lastCall = startTime;
             pTaskEnt->lateTime += tDelta - pTaskEnt->minMicros;
             pTaskEnt->cpuTime += timeDiff(startTime, micros());
+            pTaskEnt->callCount += 1;
         }
     }
 
@@ -387,16 +388,24 @@ class Scheduler {
                 } else {
                     Serial.print("<null>");
                 }
-                Serial.print(" late:");
+                unsigned long cc = taskList[i].callCount;
                 double lateMillis =
                     (taskList[i].lateTime * (statsecs * 1000.0)) / tDelta;
+                if (cc) {
+                    lateMillis /= (double)cc;
+                    millis /= (double)cc;
+                }
+                Serial.print("num: ");
+                Serial.print(cc);
+                Serial.print(" calls, late/call: ");
                 Serial.print(lateMillis);
-                Serial.print("ms, cpu:");
+                Serial.print("ms, cpu/call: ");
                 Serial.print(millis);
                 Serial.println("ms");
 #endif
                 taskList[i].cpuTime = 0;
                 taskList[i].lateTime = 0;
+                taskList[i].callCount = 0;
             }
 #ifdef USE_SERIAL_DBG
             Serial.println("---------------------------");
