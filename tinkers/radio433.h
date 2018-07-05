@@ -1,8 +1,6 @@
 // radio433.h
 #pragma once
 
-#include <RFControl.h>
-
 #include "scheduler.h"
 
 namespace ustd {
@@ -27,7 +25,7 @@ class Radio433 {
         // give a c++11 lambda as callback scheduler task registration of
         // this.loop():
         std::function<void()> ft = [=]() { this->loop(); };
-        tID = pSched->add(ft, name, 40000);
+        tID = pSched->add(ft, name, 2000);
 
         std::function<void(String, String, String)> fnall =
             [=](String topic, String msg, String originator) {
@@ -36,34 +34,64 @@ class Radio433 {
         pSched->subscribe(tID, name + "/radio433/#", fnall);
 
         pinMode(rcvPin, INPUT);
-        RFControl::startReceiving(rcvPin);
     }
 
+    int aborted = 0;
+    int len = 0;
     void loop() {
-        if (RFControl::hasData()) {
-#ifdef USE_SERIAL_DBG
-            Serial.println("has data");
-#endif
-            unsigned int *timings;
-            unsigned int timings_size;
-            unsigned int pulse_length_divider =
-                RFControl::getPulseLengthDivider();
-            RFControl::getRaw(&timings, &timings_size);
-            for (unsigned int i = 0; i < timings_size; i++) {
-                unsigned long timing = timings[i] * pulse_length_divider;
-#ifdef USE_SERIAL_DBG
-                Serial.print(timing);
-                Serial.print("\t");
-                if ((i + 1) % 16 == 0) {
-                    Serial.print("\n");
+        unsigned long pulse = pulseIn(rcvPin, LOW, 10000);
+        if (pulse < 11000) {
+            if (pulse > 1500 &&
+                pulse <
+                    11000) {  // passendes Signal (zwischen 150ms und 11000ms) ?
+                if (pulse < 2500) {  // kleiner 250ms ? Dann LOW
+                    Serial.print("0");
+                    aborted = 0;
+                    ++len;
                 }
-#endif
+                if (pulse < 5000 &&
+                    pulse > 3000) {  // Zwischen 500ms und 1000ms dann HIGH
+                    Serial.print("1");
+                    aborted = 0;
+                    ++len;
+                }
+                if (pulse > 8000) {  // Groesser 800ms dann Startsequenz !
+                    if (len > 0) {
+                        Serial.print("[");
+                        Serial.print(len);
+                        Serial.print("]");
+                    }
+                    Serial.println();
+                    Serial.print("S");
+                    aborted = 0;
+                    len = 0;
+                }
+            } else {
+                // Serial.print("X");
+                /*
+                if (!aborted) {
+                    aborted = 1;
+                    if (len > 0) {
+                        Serial.print("[");
+                        Serial.print(len);
+                        Serial.print("]");
+                    }
+                    Serial.println();
+                    len = 0;
+                }
+                */
             }
-#ifdef USE_SERIAL_DBG
-            Serial.print("\n");
-            Serial.println();
-#endif
-            RFControl::continueReceiving();
+        } else {
+            if (!aborted) {
+                aborted = 1;
+                if (len > 0) {
+                    Serial.print("[");
+                    Serial.print(len);
+                    Serial.print("]");
+                }
+                len = 0;
+                Serial.println();
+            }
         }
     }
 
