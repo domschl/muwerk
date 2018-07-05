@@ -27,7 +27,8 @@ ustd::Ota ota;
 #ifdef R433_RAW
 ustd::Radio433 r433("Radio", D3);
 #else
-ustd::Radio433rcs r433("Radio", D2);
+// Do NOT use D3: a hardware pull-up prevents RXB6 from working:
+ustd::Radio433rcs r433("rxb6", D2);
 #endif
 
 void subsMsg(String topic, String msg, String originator) {
