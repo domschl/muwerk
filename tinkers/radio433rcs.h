@@ -41,8 +41,11 @@ class Radio433rcs {
         pinMode(rcvPin, INPUT);
         pRadio = new RCSwitch();
         pRadio->enableReceive(rcvPin);  // Receiver on interrupt rcvPin
+        // Does not work: PIN_PULLUP_DIS(rcvPin);
 
+#ifdef USE_SERIAL_DBG
         Serial.println("rf_sniffer started");
+#endif
     }
 
     void loop() {
@@ -51,21 +54,35 @@ class Radio433rcs {
             int value = pRadio->getReceivedValue();
 
             if (value == 0) {
+#ifdef USE_SERIAL_DBG
                 Serial.print("#### RECEIVE 433: Unknown encoding");
+#endif
             } else {
+                unsigned long val = pRadio->getReceivedValue();
+#ifdef USE_SERIAL_DBG
                 Serial.print("#### RECEIVE 433:  ");
-                Serial.print(pRadio->getReceivedValue());
+                Serial.print(val);
                 Serial.print(" / ");
                 Serial.print(pRadio->getReceivedBitlength());
                 Serial.print("bit ");
                 Serial.print("Protocol: ");
                 Serial.println(pRadio->getReceivedProtocol());
+#endif
+                char msg[256];
+                sprintf(msg, "%ld", val);
+                pSched->publish(name + "/receive/value", msg);
+                sprintf(msg, "%d", pRadio->getReceivedBitlength());
+                pSched->publish(name + "/receive/length", msg);
+                sprintf(msg, "%d", pRadio->getReceivedProtocol());
+                pSched->publish(name + "/receive/protocol", msg);
             }
             pRadio->resetAvailable();
             count = 0;
         } else {
+#ifdef USE_SERIAL_DBG
             if (++count % 30000 == 0)
                 Serial.println("433: no activity");
+#endif
         }
     }
 

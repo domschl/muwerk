@@ -27,7 +27,7 @@ ustd::Ota ota;
 #ifdef R433_RAW
 ustd::Radio433 r433("Radio", D3);
 #else
-ustd::Radio433rcs r433("Radio", D3);
+ustd::Radio433rcs r433("Radio", D2);
 #endif
 
 void subsMsg(String topic, String msg, String originator) {
@@ -36,9 +36,10 @@ void subsMsg(String topic, String msg, String originator) {
 }
 
 void setup() {
+#ifdef USE_SERIAL_DBG
     Serial.begin(115200);
     Serial.println("Hello, world!");
-
+#endif
     sched.subscribe(SCHEDULER_MAIN, "radio/#", subsMsg);
 
     net.begin(&sched);

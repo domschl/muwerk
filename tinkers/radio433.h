@@ -33,24 +33,25 @@ class Radio433 {
             };
         pSched->subscribe(tID, name + "/radio433/#", fnall);
 
-        pinMode(rcvPin, INPUT);
+        pinMode(rcvPin, INPUT_PULLUP);
     }
 
     int aborted = 0;
     int len = 0;
+    int started = 0;
     void loop() {
         unsigned long pulse = pulseIn(rcvPin, LOW, 10000);
-        if (pulse < 11000) {
+        if (pulse > 300) {
             if (pulse > 1500 &&
                 pulse <
                     11000) {  // passendes Signal (zwischen 150ms und 11000ms) ?
-                if (pulse < 2500) {  // kleiner 250ms ? Dann LOW
+                if (pulse < 2500 && started) {  // kleiner 250ms ? Dann LOW
                     Serial.print("0");
                     aborted = 0;
                     ++len;
                 }
-                if (pulse < 5000 &&
-                    pulse > 3000) {  // Zwischen 500ms und 1000ms dann HIGH
+                if (pulse < 5000 && pulse > 3000 &&
+                    started) {  // Zwischen 500ms und 1000ms dann HIGH
                     Serial.print("1");
                     aborted = 0;
                     ++len;
@@ -61,36 +62,27 @@ class Radio433 {
                         Serial.print(len);
                         Serial.print("]");
                     }
+                    started = 1;
                     Serial.println();
                     Serial.print("S");
                     aborted = 0;
                     len = 0;
                 }
             } else {
-                // Serial.print("X");
-                /*
-                if (!aborted) {
-                    aborted = 1;
-                    if (len > 0) {
-                        Serial.print("[");
-                        Serial.print(len);
-                        Serial.print("]");
+                if (started) {
+                    started = 0;
+                    // Serial.print("X");
+                    if (!aborted) {
+                        aborted = 1;
+                        if (len > 0) {
+                            Serial.print("[");
+                            Serial.print(len);
+                            Serial.print("]");
+                        }
+                        Serial.println();
+                        len = 0;
                     }
-                    Serial.println();
-                    len = 0;
                 }
-                */
-            }
-        } else {
-            if (!aborted) {
-                aborted = 1;
-                if (len > 0) {
-                    Serial.print("[");
-                    Serial.print(len);
-                    Serial.print("]");
-                }
-                len = 0;
-                Serial.println();
             }
         }
     }
