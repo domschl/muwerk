@@ -257,6 +257,9 @@ class Net {
         case WIFI_AUTH_WPA2_ENTERPRISE:
             return "WPA2_ENTERPRISE";
             break;
+        default:
+            return "unknown";
+            break;
         }
 #endif
     }
